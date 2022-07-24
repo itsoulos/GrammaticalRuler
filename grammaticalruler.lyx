@@ -356,12 +356,129 @@ literal "false"
 
 \begin_layout Enumerate
 Difficult to explain the solution.
+ In most cases, the generated machine learning models produce solutions
+ consisting of numerical series and numerical parameters derived from optimizati
+on methods.
+ For example, an artificial neural network can consist of a sum of products
+ with several terms, especially in large dimensional problems.
 \end_layout
 
 \begin_layout Standard
-The rest of this article is organized as follows 
-\series bold
-.....
+In this paper, an innovative technique is presented, which constructs rules
+ in a high level programming language to estimate the true output in a regressio
+n or classification problem.
+ The construction of the rules is performed using the Grammatical Evolution
+ technique 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ge"
+literal "false"
+
+\end_inset
+
+.
+ Grammatical evolution is an evolutionary process that has been applied
+ with success in many areas such as music composition 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ge_music"
+literal "true"
+
+\end_inset
+
+, economics 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ge_economics"
+literal "true"
+
+\end_inset
+
+, symbolic regression 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-17"
+literal "true"
+
+\end_inset
+
+, robot control 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ge_robot"
+literal "true"
+
+\end_inset
+
+, caching algorithms 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-19"
+literal "true"
+
+\end_inset
+
+, combinatorial optimization 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ge_comp"
+literal "false"
+
+\end_inset
+
+ etc.
+\end_layout
+
+\begin_layout Standard
+The proposed method has an advantage over other methods from the relevant
+ literature, as it does not require prior knowledge of the objective problem
+ and can be applied without any modification to both regression and classificati
+on problems.
+ Furthermore, since the method uses Grammatical Evolution, it can discover
+ hidden associations between the features of the objective problem and furthermo
+re constructs rules in a form that can be understood.
+ Also, the proposed method does not require any additional use of an optimizatio
+n method as in traditional machine learning models, thus avoiding problems
+ of numerical accuracy.
+ The proposed method requires a fixed amount of memory to store the proposed
+ solutions, which does not directly depend on the dimension of the objective
+ problem.
+\end_layout
+
+\begin_layout Standard
+The rest of this article is organized as follows: in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Method-description"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ the proposed method is outlined in detail, in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Experiments"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ the used experimental datasets are presented as well as the comparative
+ results against the proposed method and other methods from the relative
+ literature and finally in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Conclusions"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ a list of conclusions from the usage of the proposed method are presented.
 \end_layout
 
 \begin_layout Section
@@ -375,6 +492,742 @@ name "sec:Method-description"
 
 \end_layout
 
+\begin_layout Subsection
+Usage of Grammatical Evolution 
+\end_layout
+
+\begin_layout Standard
+Grammatical evolution is an evolutionary procedure that can produce programs
+ in any programming language.
+ In Grammatical evolution the chromosomes enclose production rules from
+ a BNF (Backus–Naur form) grammar
+\begin_inset CommandInset citation
+LatexCommand cite
+key "bnf1"
+literal "false"
+
+\end_inset
+
+.
+ These grammars usually described as a set 
+\series bold
+
+\begin_inset Formula $G=\left(N,T,S,P\right)$
+\end_inset
+
+
+\series default
+, where
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\begin_inset Formula $N$
+\end_inset
+
+ 
+\series default
+is the set of non-terminal symbols.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\begin_inset Formula $T$
+\end_inset
+
+ 
+\series default
+is the set of terminal symbols.
+
+\series bold
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $S$
+\end_inset
+
+ is a non-terminal symbol defined as the start symbol of the grammar.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\begin_inset Formula $P$
+\end_inset
+
+ 
+\series default
+is a set of production rules in the form 
+\series bold
+
+\begin_inset Formula $A\rightarrow a$
+\end_inset
+
+ 
+\series default
+or
+\series bold
+ 
+\begin_inset Formula $A\rightarrow aB,\ A,B\in N,\ a\in T$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In order for Grammatical Evolution to work, the original grammar is expanded
+ by enumerating all production rules.
+ For example, consider the modified grammar of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:BNF-grammar-of"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The symbols that are in <> are considered as non-terminal symbols.
+ The numbers in parentheses are the production sequence numbers for each
+ non-terminal symbol.
+ The constant N is the original number of features for the input data.
+ In Grammatical Evolution, the chromosomes are expressed as vectors of integers.
+ Every element of each chromosome denotes a
+\series bold
+ 
+\series default
+production rule from the provided BNF grammar.
+ The algorithm starts from the start symbol of the grammar and gradually
+ produces some program string, by replacing non - terminal symbols with
+ the right hand of the selected production rule.
+ The selection of the rule has two steps:
+\end_layout
+
+\begin_layout Itemize
+Take the next element from the chromosome and denote it as V.
+\end_layout
+
+\begin_layout Itemize
+Select the next production rule according to the the scheme Rule = V mod
+ R, where R is the number of production rules for the current non – terminal
+ symbol.
+ 
+\end_layout
+
+\begin_layout Standard
+For example, consider the chromosome chromosome 
+\begin_inset Formula $x=\left[9,8,6,4,16,10,17,23,8,14\right]$
+\end_inset
+
+ and 
+\begin_inset Formula $N=3$
+\end_inset
+
+.
+ The steps of mapping this chromosome to the valid expression
+\series bold
+ 
+\begin_inset Formula $f(x)=x_{2}+\cos\left(x_{3}\right)$
+\end_inset
+
+ 
+\series default
+are illustrated in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:table_with_steps"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+BNF grammar of the proposed method.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:BNF-grammar-of"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+S::=<expr>   (0) 
+\end_layout
+
+\begin_layout LyX-Code
+<expr> ::=  (<expr> <op> <expr>)  (0)             
+\end_layout
+
+\begin_layout LyX-Code
+           | <func> ( <expr> )    (1)             
+\end_layout
+
+\begin_layout LyX-Code
+           |<terminal>            (2) 
+\end_layout
+
+\begin_layout LyX-Code
+<op> ::=     +      (0)             
+\end_layout
+
+\begin_layout LyX-Code
+           | -      (1)             
+\end_layout
+
+\begin_layout LyX-Code
+           | *      (2)             
+\end_layout
+
+\begin_layout LyX-Code
+           | /      (3)
+\end_layout
+
+\begin_layout LyX-Code
+<func> ::=   sin  (0)             
+\end_layout
+
+\begin_layout LyX-Code
+           | cos  (1)             
+\end_layout
+
+\begin_layout LyX-Code
+           |exp   (2)             
+\end_layout
+
+\begin_layout LyX-Code
+           |log   (3)
+\end_layout
+
+\begin_layout LyX-Code
+<terminal>::=<xlist>                (0)                      
+\end_layout
+
+\begin_layout LyX-Code
+           |<digitlist>.<digitlist> (1)
+\end_layout
+
+\begin_layout LyX-Code
+<xlist>::=x1    (0)              
+\end_layout
+
+\begin_layout LyX-Code
+           | x2 (1)              
+\end_layout
+
+\begin_layout LyX-Code
+           ………             
+\end_layout
+
+\begin_layout LyX-Code
+           | xN (N)
+\end_layout
+
+\begin_layout LyX-Code
+<digitlist>::=<digit>                  (0)                 
+\end_layout
+
+\begin_layout LyX-Code
+           | <digit><digit>            (1)
+\end_layout
+
+\begin_layout LyX-Code
+           | <digit><digit><digit>     (2)
+\end_layout
+
+\begin_layout LyX-Code
+<digit>  ::= 0 (0)             
+\end_layout
+
+\begin_layout LyX-Code
+           | 1 (1)             
+\end_layout
+
+\begin_layout LyX-Code
+           | 2 (2)             
+\end_layout
+
+\begin_layout LyX-Code
+           | 3 (3)             
+\end_layout
+
+\begin_layout LyX-Code
+           | 4 (4)             
+\end_layout
+
+\begin_layout LyX-Code
+           | 5 (5)             
+\end_layout
+
+\begin_layout LyX-Code
+           | 6 (6)             
+\end_layout
+
+\begin_layout LyX-Code
+           | 7 (7)             
+\end_layout
+
+\begin_layout LyX-Code
+           | 8 (8)             
+\end_layout
+
+\begin_layout LyX-Code
+           | 9 (9)
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Steps to produce a valid expression from the BNF grammar.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:table_with_steps"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="12" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+String
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Chromosome
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Operation
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<expr>
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+9,8,6,4,16,10,17,23,8,14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $9\mod3=0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(<expr><op><expr>)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8,6,4,16,10,17,23,8,14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $8\mod3=2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(<terminal><op><expr>)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6,4,16,10,17,23,8,14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $6\mod2=0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(<xlist><op><expr>)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4,16,10,17,23,8,14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $4\mod3=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(x2<op><expr>)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+16,10,17,23,8,14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $16\mod4=0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(x2+<expr>)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10,17,23,8,14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $10\mod3=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(x2+<func>(<expr>))
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+17,23,8,14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $17\mod4=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(x2+cos(<expr>))
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+23,8,14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $23\mod2=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(x2+cos(<terminal>))
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8,14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $8\mod2=0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(x2+cos(<xlist>))
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+14
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $14\mod3=2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(x2+cos(x3))
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+The main algorithm
+\end_layout
+
+\begin_layout Standard
+Example of feature constructed problem.
+\end_layout
+
 \begin_layout Section
 Experiments 
 \begin_inset CommandInset label
@@ -384,6 +1237,42 @@ name "sec:Experiments"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The software used in the experiments was coded in ANSI C++ using the freely
+ available QT programming library, which can be downloaded from the relevant
+ URL 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.qt.io
+\end_layout
+
+\end_inset
+
+.
+ The software used is available under GPL license from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/itsoulos/GrammaticalRuler/
+\end_layout
+
+\end_inset
+
+.
+ Every experiment was conducted 30 times and averages were measured.
+ In each execution different seed for the drand48() random generator of
+ th C programming language was used.
+ The classification error is reported for classification datasets on the
+ test set and the average mean squared error for regression datasets.
+ Also, the well - knwon method of 10 - fold cross validation was used for
+ more reliable results.
 \end_layout
 
 \begin_layout Subsection
@@ -420,6 +1309,14 @@ status collapsed
 
 https://sci2s.ugr.es/keel/
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Keel"
+literal "false"
 
 \end_inset
 
@@ -1078,6 +1975,154 @@ Wankara
 
 \begin_layout Subsection
 Experimental results
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Experimental parameters.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Experimental-parameters."
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3842,6 +4887,155 @@ tion spanning multiple processes by integrating PCA with neural network,
 \series default
 , pp.
  4-11, 2014.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "ge"
+literal "true"
+
+\end_inset
+
+M.
+ O'Neill, C.
+ Ryan, Grammatical Evolution, IEEE Trans.
+ Evolutionary Computation 
+\series bold
+5
+\series default
+, pp.
+ 349-358, 2001.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "ge_music"
+literal "true"
+
+\end_inset
+
+Ortega A., Sánchez R., Manuel Alfonseca Moreno, Automatic composition of music
+ by means of grammatical evolution, APL '02 Proceedings of the 2002 conference
+ on APL: array processing languages: lore, problems, and applications Pages
+ 148 - 155.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "ge_economics"
+literal "true"
+
+\end_inset
+
+ O’Neill M., Brabazon A., Ryan C., Collins J.
+ J., Evolving Market Index Trading Rules Using Grammatical Evolution.
+ In: Boers E.J.W.
+ (eds) Applications of Evolutionary Computing.
+ EvoWorkshops 2001.
+ Lecture Notes in Computer Science, vol 2037.
+ Springer, Berlin, Heidelberg.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-17"
+literal "true"
+
+\end_inset
+
+O’Neill M., Ryan C., Grammatical Evolution: Evolutionary Automatic Programming
+ in a Arbitary Language, Genetic Programming, vol.
+ 4, Kluwer Academic Publishers, Dordrecht, 2003
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "ge_robot"
+literal "true"
+
+\end_inset
+
+Collins J.J., Ryan C., Automatic Generation of Robot Behaviors using Grammatical
+ Evolution, In Proc.
+ of AROB 2000, the Fifth International Symposium on Artificial Life and
+ Robotics.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-19"
+literal "true"
+
+\end_inset
+
+O'Neill M., Ryan C., in: K.
+ Miettinen, M.M.
+ Mkel, P.
+ Neittaanmki, J.
+ Periaux (Eds.), Evolutionary Algorithms in Engineering and Computer Science,
+ Jyvskyl, Finland, 1999, pp.
+ 127-134
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "ge_comp"
+literal "false"
+
+\end_inset
+
+N.
+ R.
+ Sabar, M.
+ Ayob, G.
+ Kendall, R.
+ Qu, Grammatical Evolution Hyper-Heuristic for Combinatorial Optimization
+ Problems, IEEE Transactions on Evolutionary Computation 
+\series bold
+17
+\series default
+, pp.
+ 840-861, 2013.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "bnf1"
+literal "false"
+
+\end_inset
+
+J.
+ W.
+ Backus.
+ The Syntax and Semantics of the Proposed International Algebraic Language
+ of the Zurich ACM-GAMM Conference.
+ Proceedings of the International Conference on Information Processing,
+ UNESCO, 1959, pp.125-132
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Keel"
+literal "false"
+
+\end_inset
+
+Alcalá-Fdez J., Fernandez A., Luengo J., Derrac J., García S., Sánchez L., Herrera
+ F., KEEL Data-Mining Software Tool: Data Set Repository, Integration of
+ Algorithms and Experimental Analysis Framework.
+ Journal of Multiple-Valued Logic and Soft Computing 17, pp.
+ 255-287, 2011.
 \end_layout
 
 \begin_layout Bibliography
