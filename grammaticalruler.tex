@@ -1,0 +1,1024 @@
+%% LyX 2.3.6.1 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{url}
+\usepackage{graphicx}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newenvironment{lyxcode}
+	{\par\begin{list}{}{
+		\setlength{\rightmargin}{\leftmargin}
+		\setlength{\listparindent}{0pt}% needed for AMS classes
+		\raggedright
+		\setlength{\itemsep}{0pt}
+		\setlength{\parsep}{0pt}
+		\normalfont\ttfamily}%
+	 \item[]}
+	{\end{list}}
+
+\makeatother
+
+\usepackage{babel}
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Listing}
+
+\begin{document}
+\title{Learning functions and classes using rules}
+\author{Ioannis G. Tsoulos}
+\date{Department of Informatics and Telecommunications, University of Ioannina,
+47100 Arta, Greece }
+\maketitle
+\begin{abstract}
+In this paper, a novel method is presented for generating rules for
+data classification as well as for regression problems. The proposed
+method generates simple rules in a high-level programming language
+with the help of Grammatical Evolution. The method does not require
+any prior knowledge of the objective problem, the memory it requires
+for its execution is constant regardless of the objective problem,
+and it can be used to detect any hidden dependencies between the features
+of the input problem as well. The proposed method was applied to a
+wide range of problems in the relevant literature and comparative
+results against other machine learning techniques are presented in
+this paper.
+\end{abstract}
+
+\section{Introduction }
+
+A variety of common problems from research areas can be considered
+as classification or regression problems, such as problems from physics
+\cite{fc_physics1,nnphysics1,nnphysics2,nnphysics3}, chemistry \cite{fc_chem1,fc_chem2,fc_chem3},
+economics \cite{fc_econ1,fc_econ2}, pollution \cite{fc_pollution1,fc_pollution2,fc_pollution3},
+medicine \cite{nnmed1,nnmed2} etc. These problems are usually tackled
+by learning models such as Artificial Neural Networks \cite{nn1,nn2},
+Radial Basis Function (RBF) networks \cite{rbf1,rbf2}, Support Vector
+Machines (SVM) \cite{svm}, etc. A review of the methods used in classification
+can be found in the work of Kotsiantis et al \cite{class_review}.
+Also, a discussion on how the neural networks perform on regression
+datasets is given in \cite{nn_review_regression}. In most cases,
+these learning models contain a vector of parameters $\overrightarrow{w}$
+used to minimize the quantity: 
+
+\begin{equation}
+E\left(N\left(\overrightarrow{x},\overrightarrow{w}\right)\right)=\sum_{i=1}^{M}\left(N\left(\overrightarrow{x}_{i},\overrightarrow{w}\right)-y_{i}\right)^{2}\label{eq:eq1}
+\end{equation}
+The set $\left(\overrightarrow{x_{i}},t_{i}\right),\ i=1,...,M$ is
+the so - called train set, with $t_{i}$ being the actual output for
+the pattern $\overrightarrow{x_{i}}$. The model is denoted as a function
+$N(\overrightarrow{x},\overrightarrow{w})$. The minimization of equation
+\ref{eq:eq1} has been performed with a variety of optimization methods
+in the relevant literature, such as Back Propagation method \cite{bpnn,bpnn2},
+the RPROP method \cite{rpropnn,rpropnn3,rpropnn2}, Quasi Newton methods
+\cite{quasinn,quasinn2}, Particle Swarm Optimization \cite{psonn,psonn2,psorbf}
+, genetic algorithms \cite{genetic_svm1,genetic_svm2}, simulated
+annealing \cite{siman_svm,simann_neural} etc. However, these techniques
+face a number of problems, such as:
+\begin{enumerate}
+\item The overfitting problem. A major problem with learning techniques
+is that when applied to unknown data, called also test data, they
+produce poor results even if the learning process was successful.
+This is because the parameters of the models fit accurately to the
+training data but fail to fit into unknown data. This problem is presented
+with details in the article by Geman et all \cite{nngeman}. This
+problem is tackled by a list of methods such as weight sharing \cite{nnsharing1,weightsharing1},
+pruning \cite{nnprunning,rbf_prunning1,rbf_prunning2}, weight decaying
+\cite{nndecay1,nndecay2} etc.
+\item Long execution time. In most cases, machine learning models have a
+number of parameters that is at least proportional to the dimension
+of the input problem and many times, as happens for example in artificial
+neural networks, it is a multiple of the input dimension. This means
+that long execution times of the optimization methods are required,
+especially for large datasets. This problem can be solved either by
+using parallel optimization techniques that exploit modern parallel
+architectures \cite{parallel-multistart,msgpu} or by reducing the
+input dimension with feature selection or construction techniques
+from existing ones \cite{nnpca1,nnpca2}.
+\item It is difficult to explain the solution. In most cases, the generated
+machine learning models produce solutions consisting of numerical
+series and numerical parameters derived from optimization methods.
+For example, an artificial neural network can consist of a sum of
+products with several terms, especially in large dimensional problems.
+\end{enumerate}
+In this paper, an innovative technique is presented, which constructs
+rules in a high level programming language to estimate the true output
+in a regression or classification problem. The construction of the
+rules is done using the Grammatical Evolution technique \cite{ge}.
+Grammatical evolution is an evolutionary process that has been applied
+with success in many areas, such as music composition \cite{ge_music},
+economics \cite{ge_economics}, symbolic regression \cite{key-17},
+robot control \cite{ge_robot}, caching algorithms \cite{key-19},
+combinatorial optimization \cite{ge_comp} etc.
+
+The proposed method has an advantage over other methods from the relevant
+literature, as it does not require prior knowledge of the objective
+problem and can be applied without any modification to both regression
+and classification problems. Furthermore, since the method uses Grammatical
+Evolution, it can discover hidden associations between the features
+of the objective problem and furthermore construct rules in a form
+that can be understood. Also, the proposed method does not require
+any additional use of an optimization method as in traditional machine
+learning models, thus avoiding problems of numerical accuracy. The
+proposed method requires a fixed amount of memory to store the proposed
+solutions, which does not directly depend on the dimension of the
+objective problem.
+
+The rest of this article is organized as follows: in section \ref{sec:Method-description}
+the proposed method is outlined in detail, in section \ref{sec:Experiments}
+the used experimental datasets are presented as well as the comparative
+results against the proposed method and other methods from the relative
+literature, and finally, in section \ref{sec:Conclusions} a list
+of conclusions from the usage of the proposed method are presented.
+
+\section{Method description \label{sec:Method-description}}
+
+\subsection{Usage of Grammatical Evolution \label{subsec:Usage-of-Grammatical}}
+
+Grammatical evolution is an evolutionary procedure that can produce
+programs in any programming language. In Grammatical evolution the
+chromosomes enclose production rules from a BNF (Backus--Naur form)
+grammar\cite{bnf1}. These grammars usually described as a set \textbf{$G=\left(N,T,S,P\right)$},
+where
+\begin{itemize}
+\item \textbf{$N$ }is the set of non-terminal symbols.
+\item \textbf{$T$ }is the set of terminal symbols.\textbf{ }For example,
+terminal symbols could be the digits or the functional symbols (exp,
+log, etc).
+\item $S$ is a non-terminal symbol defined as the start symbol of the grammar.
+The production initiates from this symbol.
+\item \textbf{$P$ }is a set of production rules in the form \textbf{$A\rightarrow a$
+}or\textbf{ $A\rightarrow aB,\ A,B\in N,\ a\in T$.}
+\end{itemize}
+In order for Grammatical Evolution to work, the original grammar is
+enhanced by enumerating all production rules. For example, consider
+the enhanced grammar of Figure \ref{fig:bnf}. The numbers in parentheses
+are the production sequence numbers for each non-terminal symbol.
+The constant N is of features for the input data. 
+
+In Grammatical Evolution, the chromosomes are expressed as vectors
+of integers. Every element of each chromosome denotes a\textbf{ }production
+rule from the provided BNF grammar. The algorithm starts from the
+start symbol of the grammar and gradually produces some program string,
+by replacing non - terminal symbols with the right hand of the selected
+production rule. The selection of the rule has two steps:
+\begin{itemize}
+\item Take the next element from the chromosome and denote it as V.
+\item Select the next production rule according to the the scheme Rule =
+V mod R, where R is the number of production rules for the current
+non -- terminal symbol. 
+\end{itemize}
+An example produced by this grammar could be the following:
+
+\begin{lstlisting}[language={C++}]
+if(x1>2+sin(x3)) value=10+exp(x2) else value=x1
+\end{lstlisting}
+
+\begin{figure}
+
+\caption{The BNF grammar for the proposed method.\label{fig:bnf}}
+
+\begin{lyxcode}
+<S>::=~<ifexpr>~value=<expr>~else~value=<expr>~~(0)
+
+<ifexpr>::=~if(<boolexpr>)~value=<expr>~(0)
+
+~~~~~~~~~~~~|<ifexpr>~else~if(<boolexpr>)~value=<expr>~(1)
+
+<boolexpr>::=<expr>~<relop>~<expr>~(0)
+
+~~~~~~~~~~~~|<boolexpr>~<boolop>~<boolexpr>~(1)
+
+<relop>::=~>~(0)
+
+~~~~~~~~~~~|>=~(1)
+
+~~~~~~~~~~~|<~~(2)
+
+~~~~~~~~~~~|<=~(3)
+
+~~~~~~~~~~~|=~~(4)
+
+~~~~~~~~~~~|!=~(5)
+
+<boolop>::=~~\&~(0)
+
+~~~~~~~~~~~|~|~(1)
+
+<expr>~::=~~(<expr>~<op>~<expr>)~~(0)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~<func>~(~<expr>~)~~~~(1)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|<terminal>~~~~~~~~~~~~(2)~
+
+<op>~::=~~~~~+~~~~~~(0)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~-~~~~~~(1)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~{*}~~~~~~(2)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~/~~~~~~(3)
+
+<func>~::=~~~sin~~(0)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~cos~~(1)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|exp~~~(2)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|log~~~(3)
+
+<terminal>::=<xlist>~~~~~~~~~~~~~~~~(0)~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~|<digitlist>.<digitlist>~(1)
+
+<xlist>::=x1~~~~(0)~~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~x2~(1)~~~~~~~~~~~~~~
+
+~~~~~~~~~~~\dots \dots \dots{}~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~xN~(N)
+
+<digitlist>::=<digit>~~~~~~~~~~~~~~~~~~(0)~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~<digit><digit>~~~~~~~~~~~~(1)
+
+~~~~~~~~~~~|~<digit><digit><digit>~~~~~(2)
+
+<digit>~~::=~0~(0)|~1~(1)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~2~(2)|~3~(3)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~4~(4)|~5~(5)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~6~(6)|~7~(7)~~~~~~~~~~~~~
+
+~~~~~~~~~~~|~8~(8)|~9~(9)
+
+\end{lyxcode}
+\end{figure}
+
+
+\subsection{The main algorithm}
+
+The method has the following steps:
+\begin{enumerate}
+\item \textbf{Initialization} step. \textbf{}
+
+\begin{enumerate}
+\item \textbf{Read} the train data. The train data contains $M$ patterns
+as pairs $\left(x_{i},t_{i}\right),\ i=1..M$ where $t_{i}$ is the
+actual output for pattern $x_{i}$.
+\item \textbf{Set $N_{G}$}, the maximum number of generations.
+\item \textbf{Set $N_{C}$}, the number of chromosomes.
+\item \textbf{Set $p_{S}$}, the selection rate, with $p_{s}\in[0,1]$.
+\item \textbf{Set $p_{M}$}, the mutation rate, with $p_{m}\in[0,1].$
+\item \textbf{Initialize} the chromosomes of the population. Every element
+of each chromosome is initialized randomly in the range {[}0,255{]}.
+\item \textbf{Set} iter=1, as the current number of generations.
+\end{enumerate}
+\item \textbf{Genetic step}
+
+\begin{enumerate}
+\item \textbf{For $i=1,\ldots,N_{C}$ do}
+
+\begin{enumerate}
+\item \textbf{Create} using the procedure of subsection \ref{subsec:Usage-of-Grammatical}
+an artificial program $c_{i}$ for the corresponding chromosome $g_{i}$. 
+\item \textbf{Apply }$c_{i}$ to the training data and \textbf{calculate}
+the fitness $f_{i}$ as
+\begin{equation}
+f_{i}=\sum_{j=1}^{M}\left(c_{i}\left(x_{j}\right)-t_{j}\right)^{2}
+\end{equation}
+\end{enumerate}
+\item \textbf{EndFor}
+\item \textbf{Execute} the selection procedure: 
+\begin{enumerate}
+\item The chromosomes are sorted according to their fitness. 
+\item The best\textbf{ $\left(1-p_{s}\right)\times N_{C}$} chromosomes
+are transferred without changes to the next generation of the population.
+The rest will be replaced by chromosomes that will be produced at
+the crossover.
+\end{enumerate}
+\item \textbf{Execute} the crossover procedure:\textbf{ }For every pair
+of produced offsprings, two parents are selected from the current
+population by tournament selection.\textbf{ }For every pair $(z,w)$
+of parents, two new offsprings $\tilde{z}$ and $\tilde{w}$ are created
+with one point crossover. An example of one - point crossover is as
+graphically shown in Figure \ref{fig:onepoint}.
+\item \textbf{Execute} the mutation procedure. For every element of each
+chromosome, select a random number $r\in\left[0,1\right]$ and alter
+the corresponding chromosome if $r\le p_{m}$.
+\end{enumerate}
+\item \textbf{Set} iter=iter+1
+\item \textbf{If} $\mbox{iter}\le N_{G}$ goto \textbf{Genetic} Step, 
+\item \textbf{Else} obtain $g^{*}$ as the best chromosome in the population.
+\item \textbf{Create} the corresponding artificial program $C^{*}$ through
+the procedure of subsection \ref{subsec:Usage-of-Grammatical} for
+chromosome $g^{*}$
+\item \textbf{Apply} $C^{*}$ to the test set of the dataset and report
+the results.
+\end{enumerate}
+\begin{figure}
+\caption{Example of one - point crossover.\label{fig:onepoint}}
+
+\centering{}\includegraphics[scale=0.6]{cross}
+\end{figure}
+
+
+\section{Experiments \label{sec:Experiments}}
+
+The software used in the experiments was coded in ANSI C++ using the
+freely available QT programming library, which can be downloaded from
+the relevant URL \url{https://www.qt.io}. The software used is available
+under the GPL license from \url{https://github.com/itsoulos/GrammaticalRuler/}.
+Every experiment was conducted 30 times and averages were measured.
+In each execution, a different seed for the drand48() random generator
+of the C programming language was used. The classification error is
+reported for classification datasets on the test set and the average
+mean squared error for regression datasets. Also, the well - known
+method of 10 - fold cross validation was used for more reliable results.
+
+\subsection{Dataset description }
+
+The was tested on a series of well known datasets from the relevant
+literature and the results are compared against other machine learning
+techniques. The main repositories used was:
+\begin{enumerate}
+\item The UCI Machine Learning Repository \url{http://www.ics.uci.edu/~mlearn/MLRepository.html  } 
+\item The Keel repository \url{https://sci2s.ugr.es/keel/}\cite{Keel}
+\item The Statlib repository \url{ftp://lib.stat.cmu.edu/datasets/index.html }
+\item The Kaggle repository \url{https://www.kaggle.com/}
+\end{enumerate}
+The used classification datasets are:
+\begin{enumerate}
+\item \textbf{Australian} dataset \cite{australian}, the dataset is related
+to credit card applications.
+\item \textbf{Balance} dataset \cite{balance}, which is used to predict
+psychological states. 
+\item \textbf{Dermatology} dataset \cite{dermatology}, which is used for
+differential diagnosis of erythemato-squamous diseases. 
+\item \textbf{Glass} dataset. This dataset contains glass component analysis
+for glass pieces that belong to 6 classes. 
+\item \textbf{Hayes Roth} dataset \cite{hayesroth}. This dataset contains
+\textbf{5} numeric-valued attributes and 132 patterns. 
+\item \textbf{Heart} dataset \cite{heart}, used to detect heart disease. 
+\item \textbf{HeartAttack} dataset, a dataset downloaded from \url{https://www.kaggle.com/},
+used to predict the chance of heart attack. 
+\item \textbf{HouseVotes} dataset \cite{housevotes}, which is about votes
+in the U.S. House of Representatives Congressmen. 
+\item \textbf{Liverdisorder} dataset \cite{liver}, used for detect liver
+disorders in peoples using blood analysis. 
+\item \textbf{Ionosphere} dataset, a meteorological dataset used in various
+research papers \cite{ion1,ion2}.
+\item \textbf{Mammographic} dataset \cite{mammographic}. This dataset be
+used to identify the severity (benign or malignant) of a mammographic
+mass lesion from BI-RADS attributes and the patient's age. It contains
+830 patterns of 5 features each.
+\item \textbf{PageBlocks} dataset. The dataset contains blocks of the page
+layout of a document that has been detected by a segmentation process.
+It has 5473 patterns with 10 features each.
+\item \textbf{Parkinsons} dataset,\cite{parkinson} which is created using
+a range of biomedical voice measurements from 31 people, 23 with Parkinson's
+disease (PD).The dataset has 22 features. 
+\item \textbf{Pima} dataset \cite{pima}, used to detect the presence of
+diabetes.
+\item \textbf{PopFailures} dataset \cite{popfailures}, used in meteorology. 
+\item \textbf{Regions2} dataset. It is created from liver biopsy images
+of patients with hepatitis C \cite{regions}. From each region in
+the acquired images, 18 shape-based and color-based features were
+extracted, while it was also annotated form medical experts. The resulting
+dataset includes 600 samples belonging into 6 classes.
+\item \textbf{Saheart} dataset \cite{saheart}, used to detect heart disease. 
+\item \textbf{Sonar} dataset \cite{sonar}. The task here is to discriminate
+between sonar signals bounced off a metal cylinder and those bounced
+off a roughly cylindrical rock. 
+\item \textbf{Student} dataset \cite{Student}, used to predict student's
+knowledge level.
+\item \textbf{Wine}: dataset, which is related to chemical analysis of wines
+\cite{wine1,wine2}.
+\item \textbf{Wdbc} dataset \cite{wdbc}, which contains data for breast
+tumors. 
+\item \textbf{Eeg} dataset. As an real word example, consider an EEG dataset
+described in \cite{eeg1,eeg2} is used here. The dataset consists
+of five sets (denoted as Z, O, N, F and S) each containing 100 single-channel
+EEG segments each having 23.6 sec duration. Sets Z and O have been
+taken from surface EEG recordings of five healthy volunteers with
+eye open and closed, respectively. Signals in two sets have been measured
+in seizure-free intervals from five patients in the epileptogenic
+zone (F) and from the hippocampal formation of the opposite hemisphere
+of the brain (N). Set S contains seizure activity, selected from all
+recording sites exhibiting ictal activity. Sets Z and O have been
+recorded extracranially, whereas sets N, F and S have been recorded
+intracranially.
+\item \textbf{Zoo} dataset \cite{zoo}, where the task is classify animals
+in seven predefined classes.
+\end{enumerate}
+The regression datasets are:
+\begin{enumerate}
+\item \textbf{Abalone} dataset \cite{abalone}. This data set can be used
+to obtain a model to predict the age of abalone from physical measurements. 
+\item \textbf{Airfoil }dataset, which is used by the NASA for a series of
+aerodynamic and acoustic tests \cite{airfoil}. 
+\item \textbf{Baseball} dataset, a dataset to predict the salary of baseball
+players.
+\item \textbf{BK} dataset, used to estimate the points scored per minute
+in a basketball game.
+\item \textbf{BL} dataset, which is related with the affects of machine
+adjustments on the time to count bolts.
+\item \textbf{Concrete} dataset. This dataset is taken from civil engineering\cite{concrete}. 
+\item \textbf{Dee} dataset, used to predict the daily average price of the
+electricity energy in Spain.
+\item \textbf{Diabetes} dataset, a medical dataset.
+\item \textbf{FA} dataset, which contains percentage of body fat and ten
+body circumference measurements. The goal is to fit body fat to the
+other measurements. 
+\item \textbf{Housing} dataset. This dataset was taken from the StatLib
+library and it is described in \cite{housing}.
+\item \textbf{MB} dataset. This dataset is available from Smoothing Methods
+in Statistics \cite{MB} and it includes 61 patterns. 
+\item \textbf{MORTGAGE} dataset, which contains the Economic data information
+of USA.
+\item \textbf{NT} dataset \cite{ntdataset}, which is related to the body
+temperature measurements.
+\item \textbf{PY} dataset \cite{pydataset}, used to learn Quantitative
+Structure Activity Relationships (QSARs). 
+\item \textbf{Quake} dataset, used to estimate the strength of a earthquake.
+\item \textbf{Treasure} dataset, which contains Economic data information
+of USA from 01/04/1980 to 02/04/2000 on a weekly basis.
+\item \textbf{Wankara} dataset, which contains weather information.
+\end{enumerate}
+
+\subsection{Experimental results}
+
+The parameters for the execution of the proposed method are listed
+in Table \ref{tab:Experimental-parameters.}. The experimental results
+for the classification datasets are listed in Table \ref{tab:results_class}
+and for regression datasets in Table \ref{tab:regression_results}.
+In both tables, an additional row was added at the end showing the
+average classification or regression error for all datasets and it
+is denoted by the name AVERAGE. The columns of both tables have the
+following meaning:
+\begin{enumerate}
+\item The column RBF represents the results from an RBF network with 10
+parameters.
+\item The column MLP stands for the results of a neural network trained
+by a genetic algorithm. The number of weights was set to 10. 
+\item The column PROPOSED stands for the proposed method.
+\end{enumerate}
+Judging from the experimental results, it seems that the proposed
+method on average outperforms the other machine learning methods.
+In classification problems there is a gain of 22\%-30\% and in regression
+problems the gain increases to 50\%-70\%. Furthermore, the proposed
+method does not require any prior knowledge of the input problem and
+the memory space it uses is fixed and independent of the objective
+problem. The results produced by the proposed method are in an understandable
+form and in which possible dependencies between the characteristics
+of the objective problem can be detected. The generated result of
+the method could, for example, be used as a function in some high-level
+programming language such as the C programming language.
+
+\begin{table}
+\caption{Experimental parameters.\label{tab:Experimental-parameters.}}
+
+\centering{}%
+\begin{tabular}{|c|c|}
+\hline 
+PARAMETER & VALUE\tabularnewline
+\hline 
+\hline 
+$N_{C}$ & 500\tabularnewline
+\hline 
+$N_{G}$ & 2000\tabularnewline
+\hline 
+$p_{s}$ & 0.1\tabularnewline
+\hline 
+$p_{m}$ & 0.05\tabularnewline
+\hline 
+\end{tabular}
+\end{table}
+
+\begin{table}
+\caption{Experiemental results for classification datasets.\label{tab:results_class}}
+
+\centering{}%
+\begin{tabular}{|c|c|c|c|}
+\hline 
+DATASET & RBF & MLP & PROPOSED\tabularnewline
+\hline 
+\hline 
+AUSTRALIAN & 34.89\% & 32.21\% & 14.84\%\tabularnewline
+\hline 
+BALANCE & 33.42\% & 8.97\% & 10.40\%\tabularnewline
+\hline 
+DERMATOLOGY & 62.34\% & 30.58\% & 29.40\%\tabularnewline
+\hline 
+GLASS & 50.16\% & 60.25\% & 55.19\%\tabularnewline
+\hline 
+HAYES ROTH & 64.36\% & 56.18\% & 32.08\%\tabularnewline
+\hline 
+HEART & 31.20\% & 28.34\% & 19.70\%\tabularnewline
+\hline 
+HEARTATTACK & 32.83\% & 31.54\% & 22.07\%\tabularnewline
+\hline 
+HOUSEVOTES & 5.99\% & 6.62\% & 3.00\%\tabularnewline
+\hline 
+IONOSPHERE & 16.22\% & 15.14\% & 11.11\%\tabularnewline
+\hline 
+LIVERDISORDER & 30.84\% & 31.11\% & 32.32\%\tabularnewline
+\hline 
+MAMMOGRAPHIC & 21.38\% & 19.88\% & 17.54\%\tabularnewline
+\hline 
+PARKINSONS & 17.41\% & 18.05\% & 13.11\%\tabularnewline
+\hline 
+PIMA & 25.75\% & 32.19\% & 24.90\%\tabularnewline
+\hline 
+POPFAILURES & 7.04\% & 5.94\% & 5.33\%\tabularnewline
+\hline 
+REGIONS2 & 37.49\% & 29.39\% & 26.87\%\tabularnewline
+\hline 
+SAHEART & 32.19\% & 34.86\% & 30.97\%\tabularnewline
+\hline 
+SONAR & 27.85\% & 26.97\% & 28.38\%\tabularnewline
+\hline 
+STUDENT & 5.74\% & 7.23\% & 5.47\%\tabularnewline
+\hline 
+WDBC & 7.27\% & 8.56\% & 5.66\%\tabularnewline
+\hline 
+WINE & 31.41\% & 19.20\% & 11.35\%\tabularnewline
+\hline 
+Z\_F\_S & 13.16\% & 10.73\% & 7.97\%\tabularnewline
+\hline 
+ZO\_NF\_S & 9.02\% & 8.41\% & 8.20\%\tabularnewline
+\hline 
+ZONF\_S & 4.03\% & 2.60\% & 1.98\%\tabularnewline
+\hline 
+Z\_O\_N\_F\_S & 48.71\% & 65.45\% & 45.98\%\tabularnewline
+\hline 
+ZOO & 21.77\% & 16.67\% & 9.70\%\tabularnewline
+\hline 
+\textbf{AVERAGE} & \textbf{26.90\%} & \textbf{24.28\%} & \textbf{18.94\%}\tabularnewline
+\hline 
+\end{tabular}
+\end{table}
+\begin{table}
+\caption{Experiments for regression datasets.\label{tab:regression_results}}
+
+\centering{}%
+\begin{tabular}{|c|c|c|c|}
+\hline 
+DATASET & RBF & MLP & PROPOSED\tabularnewline
+\hline 
+\hline 
+ABALONE & 7.32 & 7.17 & 5.05\tabularnewline
+\hline 
+AIRFOIL & 0.05 & 0.003 & 0.002\tabularnewline
+\hline 
+BASEBALL & 78.89 & 103.60 & 51.18\tabularnewline
+\hline 
+BK & 0.02 & 0.03 & 0.02\tabularnewline
+\hline 
+BL & 0.01 & 5.74 & 0.01\tabularnewline
+\hline 
+CONCRETE & 0.01 & 0.01 & 0.009\tabularnewline
+\hline 
+DEE & 0.17 & 1.01 & 0.24\tabularnewline
+\hline 
+DIABETES & 0.49 & 19.86 & 0.67\tabularnewline
+\hline 
+HOUSING & 57.68 & 43.26 & 23.35\tabularnewline
+\hline 
+FA & 0.01 & 1.95 & 0.01\tabularnewline
+\hline 
+MB & 1.91 & 3.39 & 0.06\tabularnewline
+\hline 
+MORTGAGE & 1.45 & 2.41 & 0.09\tabularnewline
+\hline 
+NT & 8.15 & 0.05 & 0.08\tabularnewline
+\hline 
+PY & 0.02 & 105.41 & 0.02\tabularnewline
+\hline 
+QUAKE & 0.07 & 0.04 & 0.04\tabularnewline
+\hline 
+TREASURY & 2.02 & 2.93 & 0.10\tabularnewline
+\hline 
+WANKARA & 0.001 & 0.012 & 0.0004\tabularnewline
+\hline 
+\textbf{AVERAGE} & \textbf{9.31} & \textbf{17.46} & \textbf{4.76}\tabularnewline
+\hline 
+\end{tabular}
+\end{table}
+
+
+\section{Conclusions \label{sec:Conclusions}}
+
+An innovative rule generation method for classification and regression
+problems was presented in this work. The method constructs rules in
+a high-level programming language format and can be applied without
+variation to both classification and regression problems. The method
+does not have a vector of parameters to be estimated beyond the genetic
+algorithm chromosomes. This means that the memory required to run
+the method is at the same levels regardless of the size of the input
+problem. In addition, it can be used to indirectly select features
+from input features but also to find dependencies between existing
+features. Furthermore, the method has been applied to a variety of
+classification and regression problems, and the results are quite
+encouraging. The method is freely available and requires the existence
+of the C++ language as well as the freely available QT programming
+library. Future extensions of the method may include:
+\begin{enumerate}
+\item Usage of more advanced stopping rules for the genetic algorithm.
+\item Usage of parallel programming techniques to speed up the genetic algorithm.
+\item Automatic function generation by Grammatical Evolution.
+\end{enumerate}
+\begin{thebibliography}{10}
+\bibitem{fc_physics1}E.M. Metodiev, B. Nachman, J. Thaler, Classification
+without labels: learning from mixed samples in high energy physics.
+J. High Energ. Phys. 2017, article number 174, 2017.
+
+\bibitem{nnphysics1}P. Baldi, K. Cranmer, T. Faucett et al, Parameterized
+neural networks for high-energy physics, Eur. Phys. J. C \textbf{76},
+2016.
+
+\bibitem{nnphysics2}J. J. Valdas and G. Bonham-Carter, Time dependent
+neural network models for detecting changes of state in complex processes:
+Applications in earth sciences and astronomy, Neural Networks \textbf{19},
+pp. 196-207, 2006
+
+\bibitem{nnphysics3}G. Carleo,M. Troyer, Solving the quantum many-body
+problem with artificial neural networks, Science \textbf{355}, pp.
+602-606, 2017.
+
+\bibitem{fc_chem1}C. Güler, G. D. Thyne, J. E. McCray, K.A. Turner,
+Evaluation of graphical and multivariate statistical methods for classification
+of water chemistry data, Hydrogeology Journal \textbf{10}, pp. 455-474,
+2002
+
+\bibitem{fc_chem2}E. Byvatov ,U. Fechner ,J. Sadowski , G. Schneider,
+Comparison of Support Vector Machine and Artificial Neural Network
+Systems for Drug/Nondrug Classification, J. Chem. Inf. Comput. Sci.
+\textbf{43}, pp 1882--1889, 2003.
+
+\bibitem{fc_chem3}Kunwar P. Singh, Ankita Basant, Amrita Malik, Gunja
+Jain, Artificial neural network modeling of the river water quality---A
+case study, Ecological Modelling \textbf{220}, pp. 888-895, 2009.
+
+\bibitem{fc_econ1}I. Kaastra, M. Boyd, Designing a neural network
+for forecasting financial and economic time series, Neurocomputing
+\textbf{10}, pp. 215-236, 1996. 
+
+\bibitem{fc_econ2}Moshe Leshno, Yishay Spector, Neural network prediction
+analysis: The bankruptcy case, Neurocomputing \textbf{10}, pp. 125-147,
+1996.
+
+\bibitem{fc_pollution1}A. Astel, S. Tsakovski, V, Simeonov et al.,
+Multivariate classification and modeling in surface water pollution
+estimation. Anal Bioanal Chem \textbf{390}, pp. 1283--1292, 2008.
+
+\bibitem{fc_pollution2}A. Azid, H. Juahir, M.E. Toriman et al., Prediction
+of the Level of Air Pollution Using Principal Component Analysis and
+Artificial Neural Network Techniques: a Case Study in Malaysia, Water
+Air Soil Pollut \textbf{225}, pp. 2063, 2014.
+
+\bibitem{fc_pollution3}H. Maleki, A. Sorooshian, G. Goudarzi et al.,
+Air pollution prediction by using an artificial neural network model,
+Clean Techn Environ Policy \textbf{21}, pp. 1341--1352, 2019.
+
+\bibitem{nnmed1}Igor I. Baskin, David Winkler and Igor V. Tetko,
+A renaissance of neural networks in drug discovery, Expert Opinion
+on Drug Discovery \textbf{11}, pp. 785-795, 2016.
+
+\bibitem{nnmed2}Ronadl Bartzatt, Prediction of Novel Anti-Ebola Virus
+Compounds Utilizing Artificial Neural Network (ANN), Chemistry Faculty
+Publications \textbf{49}, pp. 16-34, 2018.
+
+\bibitem{nn1}C. Bishop, Neural Networks for Pattern Recognition,
+Oxford University Press, 1995.
+
+\bibitem{nn2}G. Cybenko, Approximation by superpositions of a sigmoidal
+function, Mathematics of Control Signals and Systems \textbf{2}, pp.
+303-314, 1989.
+
+\bibitem{rbf1}J. Park and I. W. Sandberg, Universal Approximation
+Using Radial-Basis-Function Networks, Neural Computation 3, pp. 246-257,
+1991.
+
+\bibitem{rbf2}H. Yu, T. Xie, S. Paszczynski, B. M. Wilamowski, Advantages
+of Radial Basis Function Networks for Dynamic System Design, in IEEE
+Transactions on Industrial Electronics \textbf{58}, pp. 5438-5450,
+2011.
+
+\bibitem{svm}I. Steinwart, A. Christmann, Support Vector Machines,
+Information Science and Statistics, Springer, 2008.
+
+\bibitem{class_review}S.B. Kotsiantis, I.D. Zaharakis, P.E. Pintelas,
+Machine learning: a review of classification and combining techniques,
+Artif Intell Rev \textbf{26}, pp. 159--190, 2006.
+
+\bibitem{nn_review_regression}M. Adya, F. Collopy, How effective
+are neural networks at forecasting and prediction? A review and evaluation.
+J. Forecast. \textbf{17}, pp. 481-495, 1998.
+
+\bibitem{bpnn}D.E. Rumelhart, G.E. Hinton and R.J. Williams, Learning
+representations by back-propagating errors, Nature \textbf{323}, pp.
+533 - 536 , 1986.
+
+\bibitem{bpnn2}T. Chen and S. Zhong, Privacy-Preserving Backpropagation
+Neural Network Learning, IEEE Transactions on Neural Networks \textbf{20},
+, pp. 1554-1564, 2009.
+
+\bibitem{rpropnn}M. Riedmiller and H. Braun, A Direct Adaptive Method
+for Faster Backpropagation Learning: The RPROP algorithm, Proc. of
+the IEEE Intl. Conf. on Neural Networks, San Francisco, CA, pp. 586--591,
+1993.
+
+\bibitem{rpropnn3}T. Pajchrowski, K. Zawirski and K. Nowopolski,
+Neural Speed Controller Trained Online by Means of Modified RPROP
+Algorithm, IEEE Transactions on Industrial Informatics \textbf{11},
+pp. 560-568, 2015.
+
+\bibitem{rpropnn2}Rinda Parama Satya Hermanto, Suharjito, Diana,
+Ariadi Nugroho, Waiting-Time Estimation in Bank Customer Queues using
+RPROP Neural Networks, Procedia Computer Science \textbf{ 135}, pp.
+35-42, 2018.'
+
+\bibitem{quasinn}B. Robitaille and B. Marcos and M. Veillette and
+G. Payre, Modified quasi-Newton methods for training neural networks,
+Computers \& Chemical Engineering \textbf{20}, pp. 1133-1140, 1996.
+
+\bibitem{quasinn2}Q. Liu, J. Liu, R. Sang, J. Li, T. Zhang and Q.
+Zhang, Fast Neural Network Training on FPGA Using Quasi-Newton Optimization
+Method,IEEE Transactions on Very Large Scale Integration (VLSI) Systems
+\textbf{26}, pp. 1575-1579, 2018.
+
+\bibitem{psonn}C. Zhang, H. Shao and Y. Li, Particle swarm optimisation
+for evolving artificial neural network, IEEE International Conference
+on Systems, Man, and Cybernetics, , pp. 2487-2490, 2000.
+
+\bibitem{psonn2}Jianbo Yu, Shijin Wang, Lifeng Xi, Evolving artificial
+neural networks using an improved PSO and DPSO \textbf{71}, pp. 1054-1060,
+2008.
+
+\bibitem{psorbf}V. Fathi, G.A. Montazer, An improvement in RBF learning
+algorithm based on PSO for real time applications, Neurocomputing
+111, pp. 169-176, 2013.
+
+\bibitem{genetic_svm1}C.H. Wu, G.H. Tzeng, Y.J. Goo, W.C. Fang, A
+real-valued genetic algorithm to optimize the parameters of support
+vector machine for predicting bankruptcy, Expert Systems with Applications
+\textbf{32}, pp. 397-408, 2007.
+
+\bibitem{genetic_svm2}E. Pourbasheer, S. Riahi, M.R. Ganjali, P.
+Norouzi, Application of genetic algorithm-support vector machine (GA-SVM)
+for prediction of BK-channels activity, European Journal of Medicinal
+Chemistry \textbf{44}, pp. 5023-5028, 2009.
+
+\bibitem{siman_svm}P.F.Pai, W.C. Hong, Support vector machines with
+simulated annealing algorithms in electricity load forecasting, Energy
+Conversion and Management \textbf{46}, pp. 2669-2688, 2005.
+
+\bibitem{simann_neural}B. Abbasi, H. Mahlooji, Improving response
+surface methodology by using artificial neural network and simulated
+annealing, Expert Systems with Applications \textbf{39}, pp. 3461-3468,
+2012.
+
+\bibitem{nngeman}S. Geman, E. Bienenstock and R. Doursat, Neural
+networks and the bias/variance dilemma, Neural Computation \textbf{4},
+pp. 1-58, 1992.
+
+\bibitem{nnsharing1}S.J. Nowlan and G.E. Hinton, Simplifying neural
+networks by soft weight sharing, Neural Computation 4, pp. 473-493,
+1992.
+
+\bibitem{weightsharing1}T. Zhiri, Z. Ruohua, L. Peng, H. Jin, W.
+Hao, H. Qijun, C. Sheng, M. Qiming, A hardware friendly unsupervised
+memristive neural network with weight sharing mechanism, Neurocomputing
+332, pp. 193-202, 2019.
+
+\bibitem{nnprunning}G. Castellano, A. M. Fanelli, M. Pelillo, An
+iterative pruning algorithm for feedforward neural networks, IEEE
+Transactions on Neural Networks \textbf{8}, pp. 519-531, 1997.
+
+\bibitem{rbf_prunning1}A.L.I. Oliveira, B.J.M. Melo, S.R.L. Meira,
+Improving constructive training of RBF networks through selective
+pruning and model selection, Neurocomputing \textbf{64}, pp. 537-541,
+2005.
+
+\bibitem{rbf_prunning2}G.B. Huang, P. Saratchandran, N. Sundararajan,
+A generalized growing and pruning RBF (GGAP-RBF) neural network for
+function approximation, IEEE Transactions on Neural Networks \textbf{16},
+pp. 57-67, 2005.
+
+\bibitem{nndecay1}N. K. Treadgold and T. D. Gedeon, Simulated annealing
+and weight decay in adaptive learning: the SARPROP algorithm,IEEE
+Transactions on Neural Networks \textbf{9}, pp. 662-668, 1998.
+
+\bibitem{nndecay2}M. Carvalho and T. B. Ludermir, Particle Swarm
+Optimization of Feed-Forward Neural Networks with Weight Decay, 2006
+Sixth International Conference on Hybrid Intelligent Systems (HIS'06),
+Rio de Janeiro, Brazil, 2006, pp. 5-5.
+
+\bibitem{parallel-multistart}J. Larson and S.M. Wild, Asynchronously
+parallel optimization solver for finding multiple minima, Mathematical
+Programming Computation \textbf{10}, pp. 303-332, 2018.
+
+\bibitem{msgpu}R. Kamil, S. Reiji, An Efficient GPU Implementation
+of a Multi-Start TSP Solver for Large Problem Instances, Proceedings
+of the 14th Annual Conference Companion on Genetic and Evolutionary
+Computation, pp. 1441-1442, 2012.
+
+\bibitem{nnpca1}Burcu Erkmen, Tülay Y\i ld\i r\i m, Improving classification
+performance of sonar targets by applying general regression neural
+network with PCA, Expert Systems with Applications \textbf{35}, pp.
+472-475, 2008.
+
+\bibitem{nnpca2}Jing Zhou, Aihuang Guo, Branko Celler, Steven Su,
+Fault detection and identification spanning multiple processes by
+integrating PCA with neural network, Applied Soft Computing \textbf{14},
+pp. 4-11, 2014.
+
+\bibitem{ge}M. O'Neill, C. Ryan, Grammatical Evolution, IEEE Trans.
+Evolutionary Computation \textbf{5}, pp. 349-358, 2001.
+
+\bibitem{ge_music}Ortega A., Sánchez R., Manuel Alfonseca Moreno,
+Automatic composition of music by means of grammatical evolution,
+APL '02 Proceedings of the 2002 conference on APL: array processing
+languages: lore, problems, and applications Pages 148 - 155.
+
+\bibitem{ge_economics} O\textquoteright Neill M., Brabazon A., Ryan
+C., Collins J. J., Evolving Market Index Trading Rules Using Grammatical
+Evolution. In: Boers E.J.W. (eds) Applications of Evolutionary Computing.
+EvoWorkshops 2001. Lecture Notes in Computer Science, vol 2037. Springer,
+Berlin, Heidelberg.
+
+\bibitem{key-17}O\textquoteright Neill M., Ryan C., Grammatical Evolution:
+Evolutionary Automatic Programming in a Arbitary Language, Genetic
+Programming, vol. 4, Kluwer Academic Publishers, Dordrecht, 2003
+
+\bibitem{ge_robot}Collins J.J., Ryan C., Automatic Generation of
+Robot Behaviors using Grammatical Evolution, In Proc. of AROB 2000,
+the Fifth International Symposium on Artificial Life and Robotics. 
+
+\bibitem{key-19}O'Neill M., Ryan C., in: K. Miettinen, M.M. Mkel,
+P. Neittaanmki, J. Periaux (Eds.), Evolutionary Algorithms in Engineering
+and Computer Science, Jyvskyl, Finland, 1999, pp. 127-134
+
+\bibitem{ge_comp}N. R. Sabar, M. Ayob, G. Kendall, R. Qu, Grammatical
+Evolution Hyper-Heuristic for Combinatorial Optimization Problems,
+IEEE Transactions on Evolutionary Computation \textbf{17}, pp. 840-861,
+2013.
+
+\bibitem{bnf1}J. W. Backus. The Syntax and Semantics of the Proposed
+International Algebraic Language of the Zurich ACM-GAMM Conference.
+Proceedings of the International Conference on Information Processing,
+UNESCO, 1959, pp.125-132
+
+\bibitem{Keel}Alcalá-Fdez J., Fernandez A., Luengo J., Derrac J.,
+García S., Sánchez L., Herrera F., KEEL Data-Mining Software Tool:
+Data Set Repository, Integration of Algorithms and Experimental Analysis
+Framework. Journal of Multiple-Valued Logic and Soft Computing 17,
+pp. 255-287, 2011.
+
+\bibitem{australian}J.R. Quinlan, Simplifying Decision Trees. International
+Journal of Man-Machine Studies \textbf{27}, pp. 221-234, 1987. 
+
+\bibitem{balance}T. Shultz, D. Mareschal, W. Schmidt, Modeling Cognitive
+Development on Balance Scale Phenomena, Machine Learning \textbf{16},
+pp. 59-88, 1994.
+
+\bibitem{dermatology}G. Demiroz, H.A. Govenir, N. Ilter, Learning
+Differential Diagnosis of Eryhemato-Squamous Diseases using Voting
+Feature Intervals, Artificial Intelligence in Medicine. \textbf{13},
+pp. 147--165, 1998.
+
+\bibitem{hayesroth}B. Hayes-Roth, B., F. Hayes-Roth. Concept learning
+and the recognition and classification of exemplars. Journal of Verbal
+Learning and Verbal Behavior \textbf{16}, pp. 321-338, 1977.
+
+\bibitem{heart}I. Kononenko, E. ¦imec, M. Robnik-¦ikonja, Overcoming
+the Myopia of Inductive Learning Algorithms with RELIEFF, Applied
+Intelligence \textbf{7}, pp. 39--55, 1997.
+
+\bibitem{housevotes}R.M. French, N. Chater, Using noise to compute
+error surfaces in connectionist networks: a novel means of reducing
+catastrophic forgetting, Neural Comput. \textbf{14}, pp. 1755-1769,
+2002.
+
+\bibitem{ion1}J.G. Dy , C.E. Brodley, Feature Selection for Unsupervised
+Learning, The Journal of Machine Learning Research \textbf{5}, pp
+845--889, 2004.
+
+\bibitem{ion2}S. J. Perantonis, V. Virvilis, Input Feature Extraction
+for Multilayered Perceptrons Using Supervised Principal Component
+Analysis, Neural Processing Letters \textbf{10}, pp 243--252, 1999.
+
+\bibitem{liver} J. Garcke, M. Griebel, Classification with sparse
+grids using simplicial basis functions, Intell. Data Anal. \textbf{6},
+pp. 483-502, 2002.
+
+\bibitem{mammographic}M. Elter, R. Schulz-Wendtland, T. Wittenberg,
+The prediction of breast cancer biopsy outcomes using two CAD approaches
+that both emphasize an intelligible decision process, Med Phys. \textbf{34},
+pp. 4164-72, 2007.
+
+\bibitem{parkinson}M.A. Little, P.E. McSharry, E.J. Hunter, Lorraine
+O. Ramig (2008), Suitability of dysphonia measurements for telemonitoring
+of Parkinson's disease, IEEE Transactions on Biomedical Engineering
+\textbf{56}, pp. 1015-1022, 2009.
+
+\bibitem{pima}J.W. Smith, J.E. Everhart, W.C. Dickson, W.C. Knowler,
+R.S. Johannes, Using the ADAP learning algorithm to forecast the onset
+of diabetes mellitus, In: Proceedings of the Symposium on Computer
+Applications and Medical Care IEEE Computer Society Press, pp.261-265,
+1988.
+
+\bibitem{popfailures}D.D. Lucas, R. Klein, J. Tannahill, D. Ivanova,
+S. Brandon, D. Domyancic, Y. Zhang, Failure analysis of parameter-induced
+simulation crashes in climate models, Geoscientific Model Development
+\textbf{6}, pp. 1157-1171, 2013.
+
+\bibitem{regions}N. Giannakeas, M.G. Tsipouras, A.T. Tzallas, K.
+Kyriakidi, Z.E. Tsianou, P. Manousou, A. Hall, E.C. Karvounis, V.
+Tsianos, E. Tsianos, A clustering based method for collagen proportional
+area extraction in liver biopsy images (2015) Proceedings of the Annual
+International Conference of the IEEE Engineering in Medicine and Biology
+Society, EMBS, 2015-November, art. no. 7319047, pp. 3097-3100. 
+
+\bibitem{saheart}T. Hastie, R. Tibshirani, Non-parametric logistic
+and proportional odds regression, JRSS-C (Applied Statistics) \textbf{36},
+pp. 260--276, 1987.
+
+\bibitem{sonar}R.P. Gorman, T.J. Sejnowski, Analysis of Hidden Units
+in a Layered Network Trained to Classify Sonar Targets, Neural Networks
+\textbf{1}, pp. 75-89, 1988.
+
+\bibitem{Student}H. T. Kahraman, S. Sagiroglu, I. Colak, Developing
+intuitive knowledge classifier and modeling of users' domain dependent
+data in web, Knowledge Based Systems \textbf{ 37}, pp. 283-295, 2013.
+
+\bibitem{wine1}M. Raymer, T.E. Doom, L.A. Kuhn, W.F. Punch, Knowledge
+discovery in medical and biological datasets using a hybrid Bayes
+classifier/evolutionary algorithm. IEEE transactions on systems, man,
+and cybernetics. Part B, Cybernetics : a publication of the IEEE Systems,
+Man, and Cybernetics Society, \textbf{33} , pp. 802-813, 2003.
+
+\bibitem{wine2}P. Zhong, M. Fukushima, Regularized nonsmooth Newton
+method for multi-class support vector machines, Optimization Methods
+and Software \textbf{22}, pp. 225-236, 2007.
+
+\bibitem{wdbc}W.H. Wolberg, O.L. Mangasarian, Multisurface method
+of pattern separation for medical diagnosis applied to breast cytology,
+Proc Natl Acad Sci U S A. \textbf{87}, pp. 9193--9196, 1990.
+
+\bibitem{eeg1}R. G. Andrzejak, K. Lehnertz, F.Mormann, C. Rieke,
+P. David, and C. E. Elger, \textquotedblleft Indications of nonlinear
+deterministic and finite-dimensional structures in time series of
+brain electrical activity: dependence on recording region and brain
+state,\textquotedblright{} Physical Review E, vol. 64, no. 6, Article
+ID 061907, 8 pages, 2001. 
+
+\bibitem{eeg2}A. T. Tzallas, M. G. Tsipouras, and D. I. Fotiadis,
+\textquotedblleft Automatic Seizure Detection Based on Time-Frequency
+Analysis and Artificial Neural Networks,\textquotedblright{} Computational
+Intelligence and Neuroscience, vol. 2007, Article ID 80510, 13 pages,
+2007. doi:10.1155/2007/80510
+
+\bibitem{zoo}M. Koivisto, K. Sood, Exact Bayesian Structure Discovery
+in Bayesian Networks, The Journal of Machine Learning Research\textbf{
+5}, pp. 549--573, 2004.
+
+\bibitem{abalone}W. J Nash, T.L. Sellers, S.R. Talbot, A.J. Cawthor,
+W.B. Ford, The Population Biology of Abalone (\_Haliotis\_ species)
+in Tasmania. I. Blacklip Abalone (\_H. rubra\_) from the North Coast
+and Islands of Bass Strait, Sea Fisheries Division, Technical Report
+No. 48 (ISSN 1034-3288), 1994.
+
+\bibitem{airfoil}T.F. Brooks, D.S. Pope, A.M. Marcolini, Airfoil
+self-noise and prediction. Technical report, NASA RP-1218, July 1989. 
+
+\bibitem{concrete}I.Cheng Yeh, Modeling of strength of high performance
+concrete using artificial neural networks, Cement and Concrete Research.
+\textbf{28}, pp. 1797-1808, 1998. 
+
+\bibitem{housing}D. Harrison and D.L. Rubinfeld, Hedonic prices and
+the demand for clean ai, J. Environ. Economics \& Management \textbf{5},
+pp. 81-102, 1978.
+
+\bibitem{MB}J.S. Simonoff, Smooting Methods in Statistics, Springer
+- Verlag, 1996.
+
+\bibitem{ntdataset}P.A. Mackowiak, S.S. Wasserman, M.M. Levine, A
+critical appraisal of 98.6 degrees f, the upper limit of the normal
+body temperature, and other legacies of Carl Reinhold August Wunderlich.
+J. Amer. Med. Assoc. \textbf{268}, pp. 1578--1580, 1992.
+
+\bibitem{pydataset}R.D. King, S. Muggleton, R. Lewis, M.J.E. Sternberg,
+Proc. Nat. Acad. Sci. USA \textbf{89}, pp. 11322--11326, 1992. 
+\end{thebibliography}
+
+\end{document}
