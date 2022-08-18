@@ -2061,6 +2061,8 @@ The column RBF represents the results from an RBF network with 10 parameters.
 \end_layout
 
 \begin_layout Enumerate
+
+\series bold
 The column MLP stands for the results of a neural network trained by a genetic
  algorithm.
  The number of weights was set to 10.
@@ -2270,8 +2272,9 @@ name "tab:results_class"
 \begin_layout Plain Layout
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="27" columns="5">
+<lyxtabular version="3" rows="27" columns="6">
 <features tabularvalignment="middle">
+<column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -2301,6 +2304,15 @@ RBF
 
 \begin_layout Plain Layout
 MLP
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SGD
 \end_layout
 
 \end_inset
@@ -2356,6 +2368,15 @@ AUSTRALIAN
 \begin_inset Text
 
 \begin_layout Plain Layout
+42.92%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 22.17%
 \end_layout
 
@@ -2395,6 +2416,15 @@ BALANCE
 
 \begin_layout Plain Layout
 8.97%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6.16%
 \end_layout
 
 \end_inset
@@ -2450,6 +2480,15 @@ DERMATOLOGY
 \begin_inset Text
 
 \begin_layout Plain Layout
+45.52%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 50.98%
 \end_layout
 
@@ -2489,6 +2528,15 @@ GLASS
 
 \begin_layout Plain Layout
 60.25%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+51.41%
 \end_layout
 
 \end_inset
@@ -2544,6 +2592,15 @@ HAYES ROTH
 \begin_inset Text
 
 \begin_layout Plain Layout
+60.23%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 57.97%
 \end_layout
 
@@ -2583,6 +2640,15 @@ HEART
 
 \begin_layout Plain Layout
 28.34%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+43.57%
 \end_layout
 
 \end_inset
@@ -2638,6 +2704,15 @@ HEARTATTACK
 \begin_inset Text
 
 \begin_layout Plain Layout
+36.48%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 21.20%
 \end_layout
 
@@ -2677,6 +2752,15 @@ HOUSEVOTES
 
 \begin_layout Plain Layout
 6.62%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3.48%
 \end_layout
 
 \end_inset
@@ -2732,6 +2816,15 @@ IONOSPHERE
 \begin_inset Text
 
 \begin_layout Plain Layout
+10.14%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 13.10%
 \end_layout
 
@@ -2771,6 +2864,15 @@ LIVERDISORDER
 
 \begin_layout Plain Layout
 31.11%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+33.69%
 \end_layout
 
 \end_inset
@@ -2826,6 +2928,15 @@ MAMMOGRAPHIC
 \begin_inset Text
 
 \begin_layout Plain Layout
+21.01%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 17.08%
 \end_layout
 
@@ -2865,6 +2976,15 @@ PARKINSONS
 
 \begin_layout Plain Layout
 18.05%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+32.91%
 \end_layout
 
 \end_inset
@@ -2920,6 +3040,15 @@ PIMA
 \begin_inset Text
 
 \begin_layout Plain Layout
+35.32%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 24.53%
 \end_layout
 
@@ -2959,6 +3088,15 @@ POPFAILURES
 
 \begin_layout Plain Layout
 5.94%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3.43%
 \end_layout
 
 \end_inset
@@ -3014,6 +3152,15 @@ REGIONS2
 \begin_inset Text
 
 \begin_layout Plain Layout
+41.29%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 37.77%
 \end_layout
 
@@ -3053,6 +3200,15 @@ SAHEART
 
 \begin_layout Plain Layout
 34.86%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+34.70%
 \end_layout
 
 \end_inset
@@ -3108,6 +3264,15 @@ SONAR
 \begin_inset Text
 
 \begin_layout Plain Layout
+19.60%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 27.20%
 \end_layout
 
@@ -3147,6 +3312,15 @@ STUDENT
 
 \begin_layout Plain Layout
 7.23%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3.43%
 \end_layout
 
 \end_inset
@@ -3202,6 +3376,15 @@ WDBC
 \begin_inset Text
 
 \begin_layout Plain Layout
+17.95%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 7.98%
 \end_layout
 
@@ -3241,6 +3424,15 @@ WINE
 
 \begin_layout Plain Layout
 19.20%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+29.08%
 \end_layout
 
 \end_inset
@@ -3296,6 +3488,15 @@ Z_F_S
 \begin_inset Text
 
 \begin_layout Plain Layout
+28.58%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 14.32%
 \end_layout
 
@@ -3335,6 +3536,15 @@ ZO_NF_S
 
 \begin_layout Plain Layout
 8.41%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+29.00%
 \end_layout
 
 \end_inset
@@ -3390,6 +3600,15 @@ ZONF_S
 \begin_inset Text
 
 \begin_layout Plain Layout
+18.45%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 3.59%
 \end_layout
 
@@ -3437,6 +3656,15 @@ Z_O_N_F_S
 \begin_inset Text
 
 \begin_layout Plain Layout
+60.09%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 61.04%
 \end_layout
 
@@ -3476,6 +3704,15 @@ ZOO
 
 \begin_layout Plain Layout
 16.67%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5.00%
 \end_layout
 
 \end_inset
@@ -3538,6 +3775,19 @@ AVERAGE
 
 \begin_layout Plain Layout
 
+\series bold
+28.54%
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+25.97%
 \end_layout
 
 \end_inset
@@ -3591,8 +3841,9 @@ name "tab:regression_results"
 \begin_layout Plain Layout
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="19" columns="5">
+<lyxtabular version="3" rows="19" columns="6">
 <features tabularvalignment="middle">
+<column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -3622,6 +3873,15 @@ RBF
 
 \begin_layout Plain Layout
 MLP
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SGD
 \end_layout
 
 \end_inset
@@ -3677,7 +3937,16 @@ ABALONE
 \begin_inset Text
 
 \begin_layout Plain Layout
+4.55
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.94
 \end_layout
 
 \end_inset
@@ -3724,7 +3993,16 @@ AIRFOIL
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.004
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.002
 \end_layout
 
 \end_inset
@@ -3771,7 +4049,16 @@ BASEBALL
 \begin_inset Text
 
 \begin_layout Plain Layout
+146.46
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+112.75
 \end_layout
 
 \end_inset
@@ -3818,7 +4105,16 @@ BK
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.02
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.02
 \end_layout
 
 \end_inset
@@ -3865,7 +4161,16 @@ BL
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.002
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.09
 \end_layout
 
 \end_inset
@@ -3912,7 +4217,16 @@ CONCRETE
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.005
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.005
 \end_layout
 
 \end_inset
@@ -3959,7 +4273,16 @@ DEE
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.93
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.65
 \end_layout
 
 \end_inset
@@ -4006,7 +4329,16 @@ DIABETES
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.38
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.72
 \end_layout
 
 \end_inset
@@ -4053,7 +4385,16 @@ HOUSING
 \begin_inset Text
 
 \begin_layout Plain Layout
+81.45
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+89.44
 \end_layout
 
 \end_inset
@@ -4100,7 +4441,16 @@ FA
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.02
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.02
 \end_layout
 
 \end_inset
@@ -4147,7 +4497,16 @@ MB
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.06
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.06
 \end_layout
 
 \end_inset
@@ -4194,7 +4553,16 @@ MORTGAGE
 \begin_inset Text
 
 \begin_layout Plain Layout
+10.10
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8.64
 \end_layout
 
 \end_inset
@@ -4241,7 +4609,16 @@ NT
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.01
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.06
 \end_layout
 
 \end_inset
@@ -4279,7 +4656,7 @@ PY
 \begin_inset Text
 
 \begin_layout Plain Layout
-105.41
+105.41x
 \end_layout
 
 \end_inset
@@ -4288,7 +4665,16 @@ PY
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.02
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.06
 \end_layout
 
 \end_inset
@@ -4335,7 +4721,16 @@ QUAKE
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.04
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.04
 \end_layout
 
 \end_inset
@@ -4382,7 +4777,16 @@ TREASURY
 \begin_inset Text
 
 \begin_layout Plain Layout
+11.60
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10.35
 \end_layout
 
 \end_inset
@@ -4429,7 +4833,16 @@ WANKARA
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.0002
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0002
 \end_layout
 
 \end_inset
@@ -4483,6 +4896,19 @@ AVERAGE
 
 \begin_layout Plain Layout
 
+\series bold
+15.04
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+13.52
 \end_layout
 
 \end_inset
