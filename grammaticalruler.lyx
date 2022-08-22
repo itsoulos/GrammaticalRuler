@@ -666,11 +666,7 @@ if(x1>2+sin(x3)) value=10+exp(x2) else value=x1
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
-
-\begin_layout Plain Layout
-
-\end_layout
+status open
 
 \begin_layout Plain Layout
 \begin_inset Caption Standard
@@ -1226,10 +1222,16 @@ Apply
 \end_layout
 
 \begin_layout Standard
+In the proposed genetic algorithm, elitism is used for the best chromosome
+ in the population, which means that the best solution, if found, will not
+ be lost between the iterations of the genetic algorithm.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Caption Standard
@@ -1318,8 +1320,9 @@ Dataset description
 \end_layout
 
 \begin_layout Standard
-The was tested on a series of well known datasets from the relevant literature
- and the results are compared against other machine learning techniques.
+The proposed method was tested on a series of well known datasets from the
+ relevant literature and the results are compared against other machine
+ learning techniques.
  The main repositories used was:
 \end_layout
 
@@ -2061,16 +2064,77 @@ The column RBF represents the results from an RBF network with 10 parameters.
 \end_layout
 
 \begin_layout Enumerate
+The column MLP stands for the results of a neural network with 
+\begin_inset Formula $10$
+\end_inset
 
+ sigmoidal nodes trained by a genetic algorithm.
+ The genetic algorithm has 500 chromosomes and the maximum number of allowed
+ iterations was set to 500.
+ At the end of the genetic algorithm a BFGS variant due to Powell 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "powell"
+literal "false"
+
+\end_inset
+
+ was used to enchance the obtained result.
+ 
 \series bold
-The column MLP stands for the results of a neural network trained by a genetic
- algorithm.
- The number of weights was set to 10.
  
 \end_layout
 
 \begin_layout Enumerate
+The column SGD stands for the incorporation of the Stochastic Gradient Descent
+ method 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sgd"
+literal "false"
+
+\end_inset
+
+, used to train a neural network with 10 hidden nodes.
+ 
+\end_layout
+
+\begin_layout Enumerate
+The column LEVE represents the results from the usage of the well - known
+ local search procedure Levenberg-Marquardt 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "leve"
+literal "false"
+
+\end_inset
+
+to train a neural network with 10 hidden nodes.
+\end_layout
+
+\begin_layout Enumerate
 The column PROPOSED stands for the proposed method.
+\end_layout
+
+\begin_layout Standard
+To justify the incorporation of 10 weights in the RBF network and in the
+ artificial neural network, they were trained with 5, 10, 15 and 20 weights
+ for all classification data and the result is shown graphically in the
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:weight_comparison"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The neural network was trained using the BFGS local search procedure.
+ In the graph the average classification error for all datasets is shown.
+ As can be seen in both neural networks 10-15 processing nodes are enough
+ to achieve good results.
 \end_layout
 
 \begin_layout Standard
@@ -2086,13 +2150,118 @@ Judging from the experimental results, it seems that the proposed method
  problem can be detected.
  The generated result of the method could, for example, be used as a function
  in some high-level programming language such as the C programming language.
+ An example program for the Wine dataset is illustrated in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:program_example"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ A similar constructed program for the Housing regression dataset is shown
+ in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:example2"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The proposed method constructs simple rules for classifying or learning
+ functions while at the same time selecting features, i.e.
+ keeping from the initial features of the problem those that have greater
+ weight in learning.
 \end_layout
 
 \begin_layout Standard
+Also, and additional experiment was conducted to determine the effect of
+ the maximum number of generations on the accuracy of the proposed method.
+ The number of generations was varied from 500 to 2000 (parameter 
+\begin_inset Formula $N_{G})$
+\end_inset
+
+ and the results for the classification datasets are shown in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ng_class"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and for regression datasets in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:ng_regression"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ These experiments show the dynamics of the proposed method and its accuracy,
+ since even for a small number of generations it shows remarkable results.
+ Also through them is seen the need for the use of intelligent termination
+ rules that will terminate the proposed technique in time without having
+ to exhaust all generations of the genetic algorithm.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Comparison of average classification error for RBF and artificial neural
+ network for different number of weights.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:weight_comparison"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename weight_comparison.eps
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \begin_inset Float table
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Caption Standard
@@ -4656,9 +4825,7 @@ PY
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\series bold
-105.41x
+0.10
 \end_layout
 
 \end_inset
@@ -4888,7 +5055,7 @@ AVERAGE
 \begin_layout Plain Layout
 
 \series bold
-17.46
+11.27
 \end_layout
 
 \end_inset
@@ -4937,16 +5104,139 @@ AVERAGE
 \end_inset
 
 
-\begin_inset Float table
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Example of constructed program for the Wine dataset.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:program_example"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "language=C"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if(x9<x8) value=exp(log(sin(sin(x7+(x1))))) 
+\end_layout
+
+\begin_layout Plain Layout
+
+else value=cos(log(x12))+(x10)/x5/x7 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
 wide false
 sideways false
 status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Example program for the Housing dataset
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:example2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "language=C"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if(exp(x6)<(x7)) value=x3 
+\end_layout
+
+\begin_layout Plain Layout
+
+else 
+\end_layout
+
+\begin_layout Plain Layout
+
+value=log(x6)*x6+x6+x6/log10(x13)-(x13/(4.00))*sin(log(x10*3.3/exp((x4))))
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Experiments with the number of generations for the classification datasets.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:ng_class"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -6023,7 +6313,7 @@ AVERAGE
 \begin_inset Float table
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Caption Standard
@@ -6031,6 +6321,13 @@ status open
 \begin_layout Plain Layout
 Experiments with the number of generations using the proposed method for
  the regression datasets.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:ng_regression"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -8504,6 +8801,58 @@ R.D.
 , pp.
  11322–11326, 1992.
  
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "powell"
+literal "true"
+
+\end_inset
+
+M.J.D Powell, A Tolerant Algorithm for Linearly Constrained Optimization Calculati
+ons, Mathematical Programming 
+\series bold
+45
+\series default
+, pp.
+ 547-566, 1989.
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "sgd"
+literal "false"
+
+\end_inset
+
+S.
+ Amari, Backpropagation and stochastic gradient descent method, Neurocomputing
+ 
+\series bold
+5
+\series default
+, pp.
+ 185-196, 1993.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "leve"
+literal "false"
+
+\end_inset
+
+J.J.
+ Moré, The Levenberg-Marquardt algorithm: Implementation and theory.
+ In: Watson, G.A.
+ (eds) Numerical Analysis.
+ Lecture Notes in Mathematics, vol 630.
+ Springer, Berlin, Heidelberg, 1978.
 \end_layout
 
 \end_body

@@ -35,16 +35,16 @@ void run_program()
     for(int i=0;i<generations;i++)
     {
         pop->nextGeneration();
-        //printf("Iteration: %04d Best fitness: %20.10lg\n",
-        //       i,pop->getBestFitness());
+        printf("Iteration: %04d Best fitness: %20.10lg\n",
+               i,pop->getBestFitness());
         bestGenome = pop->getBestGenome();
         string x= program->printF(bestGenome);
-        //printf("Best Program:\n%s\n",x.c_str());
+        printf("Best Program:\n%s\n",x.c_str());
     program->fitness(bestGenome);
     double tt  = program->getTestError();
     double tc  = program->getClassError();
-    //printf("Test  error: %20.10lg \n",tt);
-    //printf("Class error: %20.10lg%%\n",tc);
+    printf("Test  error: %20.10lg \n",tt);
+    printf("Class error: %20.10lg%%\n",tc);
     }
     program->fitness(bestGenome);
     double tt  = program->getTestError();
