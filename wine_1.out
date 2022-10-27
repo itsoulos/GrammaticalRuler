@@ -1,0 +1,118 @@
+Iteration: 0000 Best fitness:             -20.1091
+Best Program:
+if(x4=68.07) value=(x9)
+else value=x8
+Test  error:                3.103 
+Class error:          76.47058824%
+Iteration: 0001 Best fitness:             -20.1091
+Best Program:
+if(x4=68.07) value=(x9)
+else value=x8
+Test  error:                3.103 
+Class error:          76.47058824%
+Iteration: 0002 Best fitness:             -20.1091
+Best Program:
+if(x4=68.07) value=(x9)
+else value=x8
+Test  error:                3.103 
+Class error:          76.47058824%
+Iteration: 0003 Best fitness:         -18.82329958
+Best Program:
+if(x5+x2<(9.2087)) value=exp((((sin(exp(x2))+(x8)/x4))))
+else value=cos(x8)/x7
+Test  error:           2.18483941 
+Class error:          52.94117647%
+Iteration: 0004 Best fitness:         -18.82329958
+Best Program:
+if(x5+x2<(9.2087)) value=exp((((sin(exp(x2))+(x8)/x4))))
+else value=cos(x8)/x7
+Test  error:           2.18483941 
+Class error:          52.94117647%
+Iteration: 0005 Best fitness:         -16.11028247
+Best Program:
+if(x5+x2<(9.2082)) value=log10((((sin(exp(x1))+(x12)+x4))))
+else value=cos(x8)/x12
+Test  error:          2.103216389 
+Class error:          76.47058824%
+Iteration: 0006 Best fitness:         -16.11028247
+Best Program:
+if(x5+x2<(9.2082)) value=log10((((sin(exp(x1))+(x12)+x4))))
+else value=cos(x8)/x12
+Test  error:          2.103216389 
+Class error:          76.47058824%
+Iteration: 0007 Best fitness:         -16.11028247
+Best Program:
+if(x5+x2<(9.2082)) value=log10((((sin(exp(x1))+(x12)+x4))))
+else value=cos(x8)/x12
+Test  error:          2.103216389 
+Class error:          76.47058824%
+Iteration: 0008 Best fitness:         -16.11028247
+Best Program:
+if(x5+x2<(9.2082)) value=log10((((sin(exp(x1))+(x12)+x4))))
+else value=cos(x8)/x12
+Test  error:          2.103216389 
+Class error:          76.47058824%
+Iteration: 0009 Best fitness:          -16.0778941
+Best Program:
+if(x5+x2<(9.3082)) value=log10((((sin(exp(x1))/(x12)+x4))))
+else value=cos(x8)/x6
+Test  error:          2.480504956 
+Class error:          82.35294118%
+Iteration: 0010 Best fitness:          -16.0778941
+Best Program:
+if(x5+x2<(9.3082)) value=log10((((sin(exp(x1))/(x12)+x4))))
+else value=cos(x8)/x6
+Test  error:          2.480504956 
+Class error:          82.35294118%
+Iteration: 0011 Best fitness:         -11.72461769
+Best Program:
+if(x5+x2<6.35) value=(x6)
+else value=(log10(((((log10(x10))+(x12)+x4-cos(x8)))))/x12)
+Test  error:          1.403533804 
+Class error:          52.94117647%
+Iteration: 0012 Best fitness:         -9.850816275
+Best Program:
+if(x5+x2<(9.241295)) value=(log10(sin(x7))+(x12)+x4)
+else value=exp(x8)/x12
+Test  error:          1.572220121 
+Class error:          47.05882353%
+Iteration: 0013 Best fitness:         -9.850816275
+Best Program:
+if(x5+x2<(9.241295)) value=(log10(sin(x7))+(x12)+x4)
+else value=exp(x8)/x12
+Test  error:          1.572220121 
+Class error:          47.05882353%
+Iteration: 0014 Best fitness:         -9.850816275
+Best Program:
+if(x5+x2<(9.241295)) value=(log10(sin(x7))+(x12)+x4)
+else value=exp(x8)/x12
+Test  error:          1.572220121 
+Class error:          47.05882353%
+Iteration: 0015 Best fitness:         -9.850816275
+Best Program:
+if(x5+x2<(9.241295)) value=(log10(sin(x7))+(x12)+x4)
+else value=exp(x8)/x12
+Test  error:          1.572220121 
+Class error:          47.05882353%
+Iteration: 0016 Best fitness:         -9.850816275
+Best Program:
+if(x5+x2<(9.241295)) value=(log10(sin(x7))+(x12)+x4)
+else value=exp(x8)/x12
+Test  error:          1.572220121 
+Class error:          47.05882353%
+Iteration: 0017 Best fitness:         -9.850816275
+Best Program:
+if(x5+x2<(9.241295)) value=(log10(sin(x7))+(x12)+x4)
+else value=exp(x8)/x12
+Test  error:          1.572220121 
+Class error:          47.05882353%
+Iteration: 0018 Best fitness:         -9.850816275
+Best Program:
+if(x5+x2<(9.241295)) value=(log10(sin(x7))+(x12)+x4)
+else value=exp(x8)/x12
+Test  error:          1.572220121 
+Class error:          47.05882353%
+Iteration: 0019 Best fitness:         -9.799921214
+Best Program:
+if(x7+x3<(2.203)) value=cos(x1/(log10(sin(x7))+(x12)+x4))
+else value=exp(x8)/x12
