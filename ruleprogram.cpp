@@ -82,12 +82,13 @@ double  RuleProgram::getTrainError()
 {
     double sum = 0.0;
     int d = train->getdimension();
-    double *xx=new double[d];
+    double *xx=NULL;//new double[d];
     for(int i=0;i<train->getpatterns();i++)
     {
-        for(int j=0;j<d;j++)
-            xx[j]=train->getpoint(i)[j];
+      //  for(int j=0;j<d;j++)
+      //      xx[j]=train->getpoint(i)[j];
         double finalValue = -1e+100;
+	xx = train->getpoint(i).data();
         for(int j=0;j<clist.size();j++)
         {
            // program->Parse(clist[j]);
@@ -102,7 +103,7 @@ double  RuleProgram::getTrainError()
         if(program->EvalError()) {delete[] xx;return 1e+100;}
         sum+=pow(ff-train->gety(i),2.0);
     }
-    delete[] xx;
+  //  delete[] xx;
     return sum;
 }
 
