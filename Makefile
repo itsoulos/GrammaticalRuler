@@ -59,10 +59,13 @@ SOURCES       = cprogram.cc \
 		get_options.cc \
 		main.cpp \
 		population.cc \
+		problem.cc \
 		program.cc \
 		rule.cc \
 		ruleprogram.cpp \
-		symbol.cc 
+		simanmethod.cpp \
+		symbol.cc \
+		tolmin.cc 
 OBJECTS       = cprogram.o \
 		dataset.o \
 		doublestack.o \
@@ -70,10 +73,13 @@ OBJECTS       = cprogram.o \
 		get_options.o \
 		main.o \
 		population.o \
+		problem.o \
 		program.o \
 		rule.o \
 		ruleprogram.o \
-		symbol.o
+		simanmethod.o \
+		symbol.o \
+		tolmin.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -165,9 +171,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		fparser.hh \
 		get_options.h \
 		population.h \
+		problem.h \
 		program.h \
 		rule.h \
 		ruleprogram.h \
+		simanmethod.h \
 		symbol.h cprogram.cc \
 		dataset.cpp \
 		doublestack.cc \
@@ -175,10 +183,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		get_options.cc \
 		main.cpp \
 		population.cc \
+		problem.cc \
 		program.cc \
 		rule.cc \
 		ruleprogram.cpp \
-		symbol.cc
+		simanmethod.cpp \
+		symbol.cc \
+		tolmin.cc
 QMAKE_TARGET  = GrammaticalRuler
 DESTDIR       = 
 TARGET        = GrammaticalRuler
@@ -378,8 +389,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents cprogram.h dataset.h doublestack.h fparser.hh get_options.h population.h program.h rule.h ruleprogram.h symbol.h $(DISTDIR)/
-	$(COPY_FILE) --parents cprogram.cc dataset.cpp doublestack.cc fparser.cc get_options.cc main.cpp population.cc program.cc rule.cc ruleprogram.cpp symbol.cc $(DISTDIR)/
+	$(COPY_FILE) --parents cprogram.h dataset.h doublestack.h fparser.hh get_options.h population.h problem.h program.h rule.h ruleprogram.h simanmethod.h symbol.h $(DISTDIR)/
+	$(COPY_FILE) --parents cprogram.cc dataset.cpp doublestack.cc fparser.cc get_options.cc main.cpp population.cc problem.cc program.cc rule.cc ruleprogram.cpp simanmethod.cpp symbol.cc tolmin.cc $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -462,8 +473,12 @@ population.o: population.cc population.h \
 		program.h \
 		symbol.h \
 		rule.h \
-		doublestack.h
+		doublestack.h \
+		problem.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o population.o population.cc
+
+problem.o: problem.cc problem.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o problem.o problem.cc
 
 program.o: program.cc program.h \
 		symbol.h \
@@ -485,8 +500,15 @@ ruleprogram.o: ruleprogram.cpp ruleprogram.h \
 		dataset.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ruleprogram.o ruleprogram.cpp
 
+simanmethod.o: simanmethod.cpp simanmethod.h \
+		problem.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o simanmethod.o simanmethod.cpp
+
 symbol.o: symbol.cc symbol.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o symbol.o symbol.cc
+
+tolmin.o: tolmin.cc problem.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tolmin.o tolmin.cc
 
 ####### Install
 

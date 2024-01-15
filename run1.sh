@@ -4,28 +4,14 @@ BASEPATH=~/Desktop/ERGASIES/GrammaticalRuler/
 PROGRAM=$BASEPATH/GrammaticalRuler
 DATAPATH=~/Desktop/ERGASIES/FeatureConstruction2/datasets/tenfolding/
 GENOMES=500
-GENERATIONS=500
+GENERATIONS=2000
 DATAFILE=$1
 rm -f $1.out
- $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -g $GENERATIONS   -t $DATAPATH/$DATAFILE.test  -n 2000 -r 1 -l 100 -g 50 -d 20 >> $1.out
- echo "$1 finish .... 1"
- $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -g $GENERATIONS   -t $DATAPATH/$DATAFILE.test  -n 2000 -r 2 -l 100 -g 50 -d 20 >> $1.out
- echo "$1 finish .... 2"
- $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -g $GENERATIONS   -t $DATAPATH/$DATAFILE.test  -n 2000 -r 3 -l 100 -g 50 -d 20 >> $1.out
- echo "$1 finish .... 3"
- $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -g $GENERATIONS   -t $DATAPATH/$DATAFILE.test  -n 2000 -r 4 -l 100 -g 50 -d 20 >> $1.out
- echo "$1 finish .... 4"
- $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -g $GENERATIONS   -t $DATAPATH/$DATAFILE.test  -n 2000 -r 5 -l 100 -g 50 -d 20 >> $1.out
- echo "$1 finish .... 5"
- $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -g $GENERATIONS   -t $DATAPATH/$DATAFILE.test  -n 2000 -r 6 -l 100 -g 50 -d 20 >> $1.out
- echo "$1 finish .... 6"
- $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -g $GENERATIONS   -t $DATAPATH/$DATAFILE.test  -n 2000 -r 7 -l 100 -g 50 -d 20 >> $1.out
- echo "$1 finish .... 7"
- $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -g $GENERATIONS   -t $DATAPATH/$DATAFILE.test  -n 2000 -r 8 -l 100 -g 50 -d 20 >> $1.out
- echo "$1 finish .... 8"
- $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -g $GENERATIONS   -t $DATAPATH/$DATAFILE.test  -n 2000 -r 9 -l 100 -g 50 -d 20 >> $1.out
- echo "$1 finish .... 9"
- $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -g $GENERATIONS   -t $DATAPATH/$DATAFILE.test  -n 2000 -r 10 -l 100 -g 50 -d 20 >> $1.out
+INSTANCES=10
+for i in $(seq 1 $INSTANCES)
+do
+ $PROGRAM -p $DATAPATH/$DATAFILE.train -c $GENOMES -t $DATAPATH/$DATAFILE.test  -n $GENERATIONS -r $i -l 100 -g 50 -d 20 >> $1.out
+done
  grep "Testerror" $1.out > xx
  mv xx $1.out
 echo -n "Test Error: "

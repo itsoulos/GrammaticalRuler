@@ -11,7 +11,7 @@ double mutation_rate=0.05;
 QString  train_file="";
 QString  test_file="";
 QString  output_file="";
-QString  kind="neural";
+QString  kind="none";
 int	generations=500;
 int localSearchGenerations=50;
 int localSearchChromosomes=20;
@@ -26,7 +26,7 @@ void	print_usage()
 			"\t-s	Specify selection rate.\n"
 			"\t-m	Specify	mutation  rate.\n"
 			"\t-r	Specify	random seed.\n"
-            "\t-k	Specify kind of the network.(neural,ode,pde,sode,kdv)\n"
+            "\t-k	Specify kind of local search method.(none,cross,mutate,siman)\n"
             "\t-o   Specify plot file.\n"
 			"\t-n	Specify maximum number of generations.\n"
             "\t-g   Specify local search generations\n"

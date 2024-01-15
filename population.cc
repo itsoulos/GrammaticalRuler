@@ -1,5 +1,8 @@
 # include <population.h>	
 # include <math.h>
+# include <problem.h>
+# include <simanmethod.h>
+# include <QString>
 # include <iostream>
 
 //# define MAX_RULE	65536
@@ -62,7 +65,7 @@ void	Population::select()
 	{
 		for(int j=0;j<genome_count-1;j++)
 		{
-			if(fitness_array[j+1]>fitness_array[j])
+			if(fitness_array[j+1]<fitness_array[j])
 			{
 				double dtemp;
 				dtemp=fitness_array[j];
@@ -94,14 +97,14 @@ void	Population::crossover()
 		// The two parents are selected here according to the tournament selection procedure
                 for(int i=0;i<2;i++)
                 {
-                        double max_fitness=-1e+10;
+                        double max_fitness=1e+100;
                         int    max_index=-1;
 			int r;
 			// Select the best parents of  the candidates 
                         for(int j=0;j<tournament_size;j++)
                         {
 				r=rand() % (genome_count);
-                                if(j==0 || fitness_array[r]>max_fitness)
+                                if(j==0 || fitness_array[r]<max_fitness)
                                 {
                                         max_index=r;
                                         max_fitness=fitness_array[r];
@@ -214,11 +217,100 @@ void	Population::nextGeneration()
 	++generation;
 }
 
+class PopulationProblem: public Problem
+{
+private:
+    Population *pop;
+    vector<int> currentGenome;
+public:
+    PopulationProblem(Population *p,vector<int> &x)
+    {
+        pop = p;
+        currentGenome = x;
+        setDimension(x.size());
+        lmargin.resize(x.size());
+        rmargin.resize(x.size());
+        for(int i=0;i<x.size();i++)
+        {
+        lmargin[i]=0;
+        rmargin[i]=MAX_RULE;
+        }
+	setLeftMargin(lmargin);
+	setRightMargin(rmargin);
+    }
+
+    double dmax(double a,double b){return a>b?a:b;}
+    virtual double funmin(Data x)
+    {
+        for(int i=0;i<x.size();i++) {
+        currentGenome[i]=(int)fabs(x[i]);
+        if(isnan(x[i]) || isinf(x[i])){ return 1e+100;}
+
+       // if(currentGenome[i]<0) currentGenome[i]=0;
+        }
+        double f= pop->fitness(currentGenome);
+        return f;
+
+    }
+    virtual void	granal(Data x,Data &g)
+    {
+        for(int i=0;i<x.size();i++)
+        {
+        double eps=pow(1e-18,1.0/3.0)*dmax(1.0,fabs(x[i]));
+        x[i]+=eps;
+        double v1=funmin(x);
+        x[i]-=2.0 *eps;
+        double v2=funmin(x);
+        g[i]=(v1-v2)/(2.0 * eps);
+        x[i]+=eps;
+        }
+    }
+
+};
+
 void	Population::localSearch(int gpos)
 {
 	vector<int> g;
 	g.resize(genome_size);
-	int pos=gpos;
+    int pos=gpos;
+    for(int i=0;i<genome_size;i++) g[i]=genome[pos][i];
+extern QString kind;
+    double t = fitness_array[pos];
+
+if(kind=="siman")
+{
+    PopulationProblem *pr=new PopulationProblem(this,g);
+    double y;
+    Data x;
+    x.resize(genome_size);
+    y=fitness_array[pos];
+    for(int i=0;i<genome_size;i++) x[i]=g[i];
+
+
+SimanMethod mt(pr);
+    mt.setPoint(x,y);
+    mt.Solve();
+    mt.getPoint(x,y);
+    
+    MinInfo Info;
+    Info.p = pr;
+    Info.iters=2001;
+    y=tolmin(x,Info);
+
+    fitness_array[pos]=y;
+
+    fprintf(stderr,"LOCAL SEARCH[%20.10lg]=>[%20.10lg]\n",t,y);
+    for(int i=0;i<genome_size;i++)
+    {
+        genome[pos][i]=(int)x[i];
+        if(genome[pos][i]<0) genome[pos][i]=0;
+    }
+    delete pr;
+    return;
+}
+else
+if(kind == "cross")
+{
 	for(int iters=1;iters<=100;iters++)
 	{
 		int randgenome=rand() % genome_count;
@@ -229,7 +321,9 @@ void	Population::localSearch(int gpos)
 		if(fabs(f)<fabs(fitness_array[pos]))
 		{
 			for(int i=0;i<genome_size;i++) genome[pos][i]=g[i];
-			fitness_array[pos]=f;
+            fitness_array[pos]=f;
+            fprintf(stderr,"LOCAL SEARCH[%20.10lg]=>[%20.10lg]\n",t,f);
+
 		}
 		else
 		{
@@ -239,11 +333,38 @@ void	Population::localSearch(int gpos)
 			if(fabs(f)<fabs(fitness_array[pos]))
 			{
 				for(int i=0;i<genome_size;i++) genome[pos][i]=g[i];
-				fitness_array[pos]=f;
+                fitness_array[pos]=f;
+                fprintf(stderr,"LOCAL SEARCH[%20.10lg]=>[%20.10lg]\n",t,f);
+
 			}
 		}
 	}
-	return;
+    return;
+}
+else
+if(kind == "mutate")
+{
+    for(int i=0;i<genome_size;i++)
+    {
+        int ipos = rand() % genome_size;
+        int new_value;
+        for(int k=0;k<20;k++)
+        {
+        int old_value = genome[pos][ipos];
+        new_value = rand() % 256;
+        genome[pos][ipos]=new_value;
+        for(int j=0;j<genome_size;j++) g[j]=genome[pos][j];
+        double trial_fitness=fitness(g);
+        if(fabs(trial_fitness)<fabs(fitness_array[pos]))
+        {
+                fitness_array[pos]=trial_fitness;
+                printf("NEW BEST VALUE[%4d] = %20.10lg \n",pos,fitness_array[pos]);
+                return;
+        }
+        else	genome[pos][ipos]=old_value;
+        }
+    }
+}
 }
 
 /* Set the mutation rate */

@@ -12,14 +12,15 @@ class Population
 		int	generation;
 		Program	*program;
 
-		double 	fitness(vector<int> &g);
 		void	crossover();
 		void	mutate();
 		void	calcFitnessArray();
 		int	elitism;
 	public:
 		Population(int gcount,int gsize,Program *p);
-		void	setElitism(int s);
+        void	setElitism(int s);
+        double 	fitness(vector<int> &g);
+
 		int	getGeneration() const;
 		int	getCount() const;
 		int	getSize() const;

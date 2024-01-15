@@ -57,7 +57,7 @@ double  RuleProgram::fitness(vector<int> &x)
     int redo = 0;
 
     string str = printRandomProgram(x,redo);
-    if(redo>=REDO_MAX) return -1e+100;
+    if(redo>=REDO_MAX) return 1e+100;
     clist = split(str,"#");
 
     //QString qstr=str.c_str();
@@ -69,13 +69,13 @@ double  RuleProgram::fitness(vector<int> &x)
         if(d!=-1)
         {
           //  printf("Wrong expression %s value = %d \n",st.c_str(),d);
-            return -1e+100;
+            return 1e+100;
         }
 
     }
 
      lastExpr = str;
-    return -getTrainError();
+    return getTrainError();
 }
 
 double  RuleProgram::getTrainError()
@@ -87,7 +87,7 @@ double  RuleProgram::getTrainError()
     {
       //  for(int j=0;j<d;j++)
       //      xx[j]=train->getpoint(i)[j];
-        double finalValue = -1e+100;
+        double finalValue = 1e+100;
 	xx = train->getpoint(i).data();
         for(int j=0;j<clist.size();j++)
         {

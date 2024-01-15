@@ -23,10 +23,13 @@ SOURCES += \
         get_options.cc \
         main.cpp \
         population.cc \
+        problem.cc \
         program.cc \
         rule.cc \
         ruleprogram.cpp \
-        symbol.cc
+        simanmethod.cpp \
+        symbol.cc \
+        tolmin.cc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -40,7 +43,9 @@ HEADERS += \
     fparser.hh \
     get_options.h \
     population.h \
+    problem.h \
     program.h \
     rule.h \
     ruleprogram.h \
+    simanmethod.h \
     symbol.h
