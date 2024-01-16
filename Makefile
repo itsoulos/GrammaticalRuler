@@ -474,7 +474,8 @@ population.o: population.cc population.h \
 		symbol.h \
 		rule.h \
 		doublestack.h \
-		problem.h
+		problem.h \
+		simanmethod.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o population.o population.cc
 
 problem.o: problem.cc problem.h
