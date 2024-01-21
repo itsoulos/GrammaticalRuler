@@ -418,6 +418,7 @@ SimanMethod mt(pr);
         mt.Solve();
         double y;
         mt.getPoint(g,y);
+        fitness_array[pos]=y;
     fprintf(stderr,"LOCAL SEARCH[%20.10lg]=>[%20.10lg]\n",t,y);
     for(int i=0;i<genome_size;i++)
     {
